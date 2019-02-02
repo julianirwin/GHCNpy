@@ -136,7 +136,7 @@ def output_to_csv(station_id):
   # Go through GHCN-D Data
   ghcnd_data= np.zeros((num_years,12,31,num_elements),dtype='f')-(9999.0)
 
-  for counter in xrange(len(ghcnd_contents)):
+  for counter in range(len(ghcnd_contents)):
     element = ghcnd_contents[counter][17:21]
 
     if element == "TMAX" or element == "TMIN" or element == "PRCP" or element == "SNOW" or element == "SNWD":
@@ -162,7 +162,7 @@ def output_to_csv(station_id):
       month_counter = int(month - 1)
 
       char=21
-      for day_counter in xrange(0,31):
+      for day_counter in range(0,31):
         if ghcnd_contents[counter][char:char+5] != "-9999" and ghcnd_contents[counter][char+6:char+7].strip() == "":
           ghcnd_data[year_counter,month_counter,day_counter,element_counter] = float(ghcnd_contents[counter][char:char+5]) / divisor
         char = char + 8
@@ -171,9 +171,9 @@ def output_to_csv(station_id):
   outfile_data = station_id+'.csv'
   out_data = open(outfile_data,'w')
   out_data.write("YYYY,MM,DD,TMAX,TMIN,PRCP,SNOW,SNWD\n")
-  for year_counter in xrange(0,num_years):
-    for month_counter in xrange(0,12):
-      for day_counter in xrange(0,31):
+  for year_counter in range(0,num_years):
+    for month_counter in range(0,12):
+      for day_counter in range(0,31):
 
         # Print(Out)
         if (ghcnd_data[year_counter,month_counter,day_counter,tmax] != -9999. or \
@@ -307,7 +307,7 @@ def output_to_netcdf(station_id):
   num_values=0
   results_time = np.zeros((num_years*12*31),dtype='f')-(9999.0)
   results_pos = np.zeros((num_years,12,31),dtype='f')-(9999.0)
-  for year in xrange(station_start_year,station_end_year+1):
+  for year in range(station_start_year,station_end_year+1):
     year_counter = int(year - station_start_year)
 
     if year == station_start_year:
@@ -320,9 +320,9 @@ def output_to_netcdf(station_id):
     else:
       end_month = 12
 
-    for month_counter in xrange(begin_month,end_month):
+    for month_counter in range(begin_month,end_month):
       month = month_counter + 1
-      for day_counter in xrange(0,31):
+      for day_counter in range(0,31):
         day = day_counter + 1
         try:
           current_date=date(year,month,day)
@@ -476,12 +476,12 @@ def output_to_netcdf(station_id):
   ghcnd_name = re.sub(' +',' ',ghcnd_name)
   ghcnd_name = ghcnd_name.replace(" ","_")
 
-  for string_counter in xrange(0,len(ghcnd_id)):
+  for string_counter in range(0,len(ghcnd_id)):
     id_var[string_counter] = ghcnd_id[string_counter]
   lat_var[:] = ghcnd_lat
   lon_var[:] = ghcnd_lon
   alt_var[:] = ghcnd_alt
-  for string_counter in xrange(0,len(ghcnd_name)):
+  for string_counter in range(0,len(ghcnd_name)):
     name_var[string_counter] = ghcnd_name[string_counter]
 
   #################################################
@@ -489,7 +489,7 @@ def output_to_netcdf(station_id):
   ghcnd_data= np.zeros((num_values,num_elements),dtype='f')-(9999.0)
   ghcnd_flag= np.zeros((num_values,num_elements,num_flags),dtype='i')+32
 
-  for counter in xrange(len(ghcnd_contents)):
+  for counter in range(len(ghcnd_contents)):
     element = ghcnd_contents[counter][17:21]
 
     if element == "TMAX" or element == "TMIN" or element == "PRCP" or element == "SNOW" or element == "SNWD":
@@ -515,7 +515,7 @@ def output_to_netcdf(station_id):
       month_counter = int(month - 1)
 
       char=21
-      for day_counter in xrange(0,31):
+      for day_counter in range(0,31):
         time_pos=results_pos[year_counter,month_counter,day_counter]
 
         # Get Values / Flags

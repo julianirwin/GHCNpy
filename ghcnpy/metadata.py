@@ -1,11 +1,8 @@
 # Import Modules
 import re
 import json
-
 import requests as r
-
 from geopy.distance import great_circle
-
 import ghcnpy as gp
 
 #################################################
@@ -22,10 +19,10 @@ def find_station(*args):
     station_name=station_name.upper()
     ghcnd_stations=gp.get_ghcnd_stations()
 
-    stns=filter(lambda x: re.search(station_name,x), ghcnd_stations[:,5])
+    stns=list(filter(lambda x: re.search(station_name,x), ghcnd_stations[:,5]))
     print("GHCND ID          LAT        LON    ELEV  ST       STATION NAME")
     print("###############################################################")
-    for station_counter in xrange(len(stns)):
+    for station_counter in range(len(stns)):
       ghcnd_meta = ghcnd_stations[ghcnd_stations[:,5]== stns[station_counter]]
       print(ghcnd_meta[0][0],ghcnd_meta[0][1],ghcnd_meta[0][2],ghcnd_meta[0][3],ghcnd_meta[0][4],ghcnd_meta[0][5])
 
@@ -41,7 +38,7 @@ def find_station(*args):
 
     print("GHCND ID          LAT        LON    ELEV  ST       STATION NAME")
     print("###############################################################")
-    for ghcnd_counter in xrange(ghcnd_stations[:,0].size):
+    for ghcnd_counter in range(ghcnd_stations[:,0].size):
       candidate_latlon=(ghcnd_stations[ghcnd_counter][1], ghcnd_stations[ghcnd_counter][2])
       dist=great_circle(target_latlon, candidate_latlon).miles
       if dist <= distance_limit:
@@ -126,7 +123,7 @@ def get_metadata(station_id):
   has_wban=False
   try:
     identifiers=homr_json['stationCollection']['stations'][0]['identifiers']
-    for counter in xrange(0,10):
+    for counter in range(0,10):
       for key, value in homr_json['stationCollection']['stations'][0]['identifiers'][counter].iteritems():
         if key == "idType" and homr_json['stationCollection']['stations'][0]['identifiers'][counter][key] == "COOP":
           has_coop=True
